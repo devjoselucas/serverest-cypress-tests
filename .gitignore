@@ -3,4 +3,6 @@ cypress/screenshots/
 cypress/videos/
 cypress/downloads/
 cypress.env.json
+reports/
+test-results/
 .DS_Store
