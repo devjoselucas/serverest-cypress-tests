@@ -12,10 +12,6 @@ class LoginPage {
     cy.getByTestId('entrar').click();
     return cy.wait('@login');
   }
-
-  alerta() {
-    return cy.get('[role="alert"]');
-  }
 }
 
 export default new LoginPage();

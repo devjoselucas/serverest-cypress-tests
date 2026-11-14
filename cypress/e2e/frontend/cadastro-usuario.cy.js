@@ -1,3 +1,4 @@
+import Alertas from '../../pages/components/Alertas';
 import CadastroPage from '../../pages/CadastroPage';
 import HomePage from '../../pages/HomePage';
 import { usuariosApi } from '../../support/api';
@@ -35,7 +36,7 @@ describe('Frontend - Cadastro de usuário', () => {
       CadastroPage.preencher(novoUsuario({ email: existente.email }));
       CadastroPage.enviar().its('response.statusCode').should('eq', 400);
 
-      CadastroPage.alertas()
+      Alertas.todos()
         .should('have.length', 1)
         .and('contain.text', 'Este email já está sendo usado');
       cy.location('pathname').should('eq', '/cadastrarusuarios');
@@ -45,9 +46,9 @@ describe('Frontend - Cadastro de usuário', () => {
   it('exige o preenchimento dos campos obrigatórios', () => {
     CadastroPage.enviar().its('response.statusCode').should('eq', 400);
 
-    CadastroPage.alertas().should('have.length', 3);
+    Alertas.todos().should('have.length', 3);
     ['Nome é obrigatório', 'Email é obrigatório', 'Password é obrigatório'].forEach((mensagem) => {
-      CadastroPage.alertaCom(mensagem).should('be.visible');
+      Alertas.com(mensagem).should('be.visible');
     });
     cy.location('pathname').should('eq', '/cadastrarusuarios');
   });

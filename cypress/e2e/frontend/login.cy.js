@@ -1,3 +1,4 @@
+import Alertas from '../../pages/components/Alertas';
 import HomePage from '../../pages/HomePage';
 import LoginPage from '../../pages/LoginPage';
 import { novoAdministrador, novoUsuario } from '../../../shared/factories';
@@ -30,7 +31,7 @@ describe('Frontend - Login', () => {
     // Usuário gerado pela factory, mas nunca cadastrado.
     LoginPage.entrarCom(novoUsuario()).its('response.statusCode').should('eq', 401);
 
-    LoginPage.alerta().should('be.visible').and('contain.text', 'Email e/ou senha inválidos');
+    Alertas.com('Email e/ou senha inválidos').should('be.visible');
     cy.location('pathname').should('eq', '/login');
     cy.window().its('localStorage').invoke('getItem', 'serverest/userToken').should('be.null');
   });
