@@ -1,6 +1,6 @@
 import HomePage from '../../pages/HomePage';
 import LoginPage from '../../pages/LoginPage';
-import { novoAdministrador, novoUsuario } from '../../support/factories';
+import { novoAdministrador, novoUsuario } from '../../../shared/factories';
 
 describe('Frontend - Login', () => {
   beforeEach(() => {

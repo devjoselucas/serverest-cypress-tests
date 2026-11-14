@@ -1,7 +1,7 @@
 import CadastroPage from '../../pages/CadastroPage';
 import HomePage from '../../pages/HomePage';
 import { usuariosApi } from '../../support/api';
-import { novoUsuario } from '../../support/factories';
+import { novoUsuario } from '../../../shared/factories';
 
 describe('Frontend - Cadastro de usuário', () => {
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe('Frontend - Cadastro de usuário', () => {
 
     CadastroPage.alertas().should('have.length', 3);
     ['Nome é obrigatório', 'Email é obrigatório', 'Password é obrigatório'].forEach((mensagem) => {
-      cy.contains('[role="alert"]', mensagem).should('be.visible');
+      CadastroPage.alertaCom(mensagem).should('be.visible');
     });
     cy.location('pathname').should('eq', '/cadastrarusuarios');
   });

@@ -1,5 +1,5 @@
 import { loginApi, produtosApi } from '../../support/api';
-import { novoProduto } from '../../support/factories';
+import { novoProduto } from '../../../shared/factories';
 
 describe('API - Login', () => {
   it('autentica com credenciais válidas e retorna um token Bearer', () => {

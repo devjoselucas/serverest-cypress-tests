@@ -1,6 +1,6 @@
 import { carrinhosApi, loginApi, produtosApi, usuariosApi } from '../api';
 import { registrarLimpeza } from '../cleanup';
-import { novoAdministrador, novoProduto, novoUsuario } from '../factories';
+import { novoAdministrador, novoProduto, novoUsuario } from '../../../shared/factories';
 
 // Comandos de preparação de massa via API. Todo dado criado aqui é removido
 // automaticamente ao final do teste (ver support/cleanup.js).

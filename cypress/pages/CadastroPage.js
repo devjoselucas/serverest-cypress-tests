@@ -24,6 +24,10 @@ class CadastroPage {
   alertas() {
     return cy.get('[role="alert"]');
   }
+
+  alertaCom(mensagem) {
+    return cy.contains('[role="alert"]', mensagem);
+  }
 }
 
 export default new CadastroPage();

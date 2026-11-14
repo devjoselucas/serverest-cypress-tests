@@ -1,5 +1,5 @@
 import { usuariosApi } from '../../support/api';
-import { novoUsuario } from '../../support/factories';
+import { novoUsuario } from '../../../shared/factories';
 
 describe('API - Usuários', () => {
   it('cadastra um usuário e o disponibiliza para consulta', () => {
