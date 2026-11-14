@@ -9,6 +9,7 @@ const base = require('./cypress.config');
  */
 module.exports = defineConfig({
   ...base,
+  reporterOptions: { ...base.reporterOptions, reportDir: 'reports/known-issues' },
   e2e: {
     ...base.e2e,
     specPattern: 'cypress/known-issues/**/*.cy.js',

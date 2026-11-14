@@ -1,4 +1,5 @@
 import { register as registrarGrep } from '@cypress/grep';
+import 'cypress-mochawesome-reporter/register';
 import './commands/dados';
 import './commands/ui';
 import { executarLimpeza } from './cleanup';
