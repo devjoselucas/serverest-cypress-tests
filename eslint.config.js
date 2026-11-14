@@ -7,11 +7,11 @@ module.exports = [
   { ignores: ['node_modules/', 'cypress/screenshots/', 'cypress/videos/', 'cypress/downloads/'] },
   js.configs.recommended,
   {
-    files: ['*.js'],
+    files: ['*.js', 'scripts/**/*.js'],
     languageOptions: { sourceType: 'commonjs', globals: globals.node },
   },
   {
-    files: ['cypress/**/*.js'],
+    files: ['cypress/**/*.js', 'shared/**/*.js'],
     ...pluginCypress.configs.recommended,
     languageOptions: {
       ...pluginCypress.configs.recommended.languageOptions,

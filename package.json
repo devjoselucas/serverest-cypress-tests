@@ -11,6 +11,7 @@
     "test": "cypress run",
     "test:api": "cypress run --spec \"cypress/e2e/api/**/*.cy.js\"",
     "test:e2e": "cypress run --spec \"cypress/e2e/frontend/**/*.cy.js\"",
+    "data:cleanup": "node scripts/limpar-massa.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
