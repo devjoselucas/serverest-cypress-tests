@@ -9,7 +9,7 @@ describe('Frontend - Cadastro de usuário', () => {
     CadastroPage.visitar();
   });
 
-  it('cadastra um novo usuário e o direciona para a loja', () => {
+  it('cadastra um novo usuário e o direciona para a loja', { tags: '@smoke' }, () => {
     const usuario = novoUsuario();
 
     CadastroPage.preencher(usuario);

@@ -14,29 +14,33 @@ describe('Frontend - Cadastro de produtos (administrador)', () => {
     ProdutosAdminPage.visitarCadastro();
   });
 
-  it('cadastra um produto que fica disponível para os clientes na loja', function () {
-    const produto = novoProduto();
+  it(
+    'cadastra um produto que fica disponível para os clientes na loja',
+    { tags: '@smoke' },
+    function () {
+      const produto = novoProduto();
 
-    ProdutosAdminPage.preencher(produto);
-    ProdutosAdminPage.enviar().then(({ response }) => {
-      cy.limparAoFinal(() => produtosApi.excluir(response.body._id, this.tokenAdmin));
-      expect(response.statusCode).to.eq(201);
-    });
+      ProdutosAdminPage.preencher(produto);
+      ProdutosAdminPage.enviar().then(({ response }) => {
+        cy.limparAoFinal(() => produtosApi.excluir(response.body._id, this.tokenAdmin));
+        expect(response.statusCode).to.eq(201);
+      });
 
-    cy.location('pathname').should('eq', '/admin/listarprodutos');
-    ProdutosAdminPage.linhaDoProduto(produto.nome)
-      .should('be.visible')
-      .and('contain.text', produto.preco)
-      .and('contain.text', produto.quantidade);
+      cy.location('pathname').should('eq', '/admin/listarprodutos');
+      ProdutosAdminPage.linhaDoProduto(produto.nome)
+        .should('be.visible')
+        .and('contain.text', produto.preco)
+        .and('contain.text', produto.quantidade);
 
-    // Troca de perfil: o mesmo produto precisa aparecer para um cliente comum.
-    cy.criarUsuario().then((cliente) => cy.loginViaApi(cliente));
-    HomePage.visitar();
-    HomePage.pesquisarProduto(produto.nome);
-    HomePage.cardDoProduto(produto.nome)
-      .should('be.visible')
-      .and('contain.text', `$ ${produto.preco}`);
-  });
+      // Troca de perfil: o mesmo produto precisa aparecer para um cliente comum.
+      cy.criarUsuario().then((cliente) => cy.loginViaApi(cliente));
+      HomePage.visitar();
+      HomePage.pesquisarProduto(produto.nome);
+      HomePage.cardDoProduto(produto.nome)
+        .should('be.visible')
+        .and('contain.text', `$ ${produto.preco}`);
+    },
+  );
 
   it('exige o preenchimento dos campos obrigatórios', () => {
     ProdutosAdminPage.enviar().its('response.statusCode').should('eq', 400);

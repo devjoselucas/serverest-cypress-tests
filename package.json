@@ -11,6 +11,8 @@
     "test": "cypress run",
     "test:api": "cypress run --spec \"cypress/e2e/api/**/*.cy.js\"",
     "test:e2e": "cypress run --spec \"cypress/e2e/frontend/**/*.cy.js\"",
+    "test:smoke": "cypress run --expose grepTags=@smoke,grepFilterSpecs=true,grepOmitFiltered=true",
+    "test:contract": "cypress run --expose grepTags=@contract,grepFilterSpecs=true,grepOmitFiltered=true",
     "data:cleanup": "node scripts/limpar-massa.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -18,6 +20,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@cypress/grep": "^7.0.0",
     "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.6.0",
     "ajv": "^8.20.0",

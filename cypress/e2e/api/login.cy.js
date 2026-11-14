@@ -2,7 +2,7 @@ import { loginApi, produtosApi } from '../../support/api';
 import { novoProduto } from '../../../shared/factories';
 
 describe('API - Login', () => {
-  it('autentica com credenciais válidas e retorna um token Bearer', () => {
+  it('autentica com credenciais válidas e retorna um token Bearer', { tags: '@smoke' }, () => {
     cy.criarUsuario().then(({ email, password }) => {
       loginApi.autenticar({ email, password }).then(({ status, body }) => {
         expect(status).to.eq(200);

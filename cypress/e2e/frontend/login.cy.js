@@ -8,7 +8,7 @@ describe('Frontend - Login', () => {
     LoginPage.visitar();
   });
 
-  it('autentica um usuário comum e exibe a loja', () => {
+  it('autentica um usuário comum e exibe a loja', { tags: '@smoke' }, () => {
     cy.criarUsuario().then((usuario) => {
       LoginPage.entrarCom(usuario).its('response.statusCode').should('eq', 200);
 

@@ -13,26 +13,30 @@ describe('API - Carrinhos', () => {
       .as('token');
   });
 
-  it('cria o carrinho calculando os totais e reservando o estoque', function () {
-    const { produto, token } = this;
-    const quantidade = 3;
+  it(
+    'cria o carrinho calculando os totais e reservando o estoque',
+    { tags: '@smoke' },
+    function () {
+      const { produto, token } = this;
+      const quantidade = 3;
 
-    cy.criarCarrinho([{ idProduto: produto._id, quantidade }], token).then(({ status, body }) => {
-      expect(status).to.eq(201);
-      expect(body.message).to.eq('Cadastro realizado com sucesso');
+      cy.criarCarrinho([{ idProduto: produto._id, quantidade }], token).then(({ status, body }) => {
+        expect(status).to.eq(201);
+        expect(body.message).to.eq('Cadastro realizado com sucesso');
 
-      carrinhosApi
-        .buscarPorId(body._id)
-        .its('body')
-        .should('deep.include', {
-          produtos: [{ idProduto: produto._id, quantidade, precoUnitario: produto.preco }],
-          precoTotal: produto.preco * quantidade,
-          quantidadeTotal: quantidade,
-        });
-    });
+        carrinhosApi
+          .buscarPorId(body._id)
+          .its('body')
+          .should('deep.include', {
+            produtos: [{ idProduto: produto._id, quantidade, precoUnitario: produto.preco }],
+            precoTotal: produto.preco * quantidade,
+            quantidadeTotal: quantidade,
+          });
+      });
 
-    estoqueDe(produto).should('eq', ESTOQUE_INICIAL - quantidade);
-  });
+      estoqueDe(produto).should('eq', ESTOQUE_INICIAL - quantidade);
+    },
+  );
 
   it('devolve os produtos ao estoque quando a compra é cancelada', function () {
     const { produto, token } = this;

@@ -14,7 +14,7 @@ import { validarContrato } from '../../support/contrato';
 
 // Os testes funcionais validam valores; estes validam o formato das respostas, para
 // acusar quebras de contrato (campo removido, renomeado, com outro tipo ou inesperado).
-describe('API - Contratos', () => {
+describe('API - Contratos', { tags: '@contract' }, () => {
   it('usuários: cadastro, consulta por id e listagem', () => {
     const usuario = novoUsuario();
 

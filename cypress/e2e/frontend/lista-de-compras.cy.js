@@ -16,7 +16,7 @@ describe('Frontend - Lista de compras', () => {
     cy.location('pathname').should('eq', '/minhaListaDeProdutos');
   });
 
-  it('adiciona à lista um produto encontrado pela pesquisa', function () {
+  it('adiciona à lista um produto encontrado pela pesquisa', { tags: '@smoke' }, function () {
     ListaDeComprasPage.nomesDosProdutos()
       .should('have.length', 1)
       .and('contain.text', this.produto.nome);

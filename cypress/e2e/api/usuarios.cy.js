@@ -2,7 +2,7 @@ import { usuariosApi } from '../../support/api';
 import { novoUsuario } from '../../../shared/factories';
 
 describe('API - Usuários', () => {
-  it('cadastra um usuário e o disponibiliza para consulta', () => {
+  it('cadastra um usuário e o disponibiliza para consulta', { tags: '@smoke' }, () => {
     const usuario = novoUsuario();
 
     usuariosApi.criar(usuario).then(({ status, body }) => {
