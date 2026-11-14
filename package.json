@@ -13,6 +13,7 @@
     "test:e2e": "cypress run --spec \"cypress/e2e/frontend/**/*.cy.js\"",
     "test:smoke": "cypress run --expose grepTags=@smoke,grepFilterSpecs=true,grepOmitFiltered=true",
     "test:contract": "cypress run --expose grepTags=@contract,grepFilterSpecs=true,grepOmitFiltered=true",
+    "test:known-issues": "cypress run --config-file cypress.known-issues.config.js",
     "data:cleanup": "node scripts/limpar-massa.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

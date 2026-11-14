@@ -15,6 +15,11 @@ class ListaDeComprasPage {
     cy.getByTestId('product-decrease-quantity').click();
   }
 
+  adicionarNoCarrinho() {
+    // O data-testid deste botão contém um espaço na própria aplicação.
+    cy.getByTestId('adicionar carrinho').click();
+  }
+
   limpar() {
     cy.getByTestId('limparLista').click();
   }
