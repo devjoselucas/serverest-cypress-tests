@@ -2,28 +2,24 @@ import HomePage from '../../pages/HomePage';
 import ListaDeComprasPage from '../../pages/ListaDeComprasPage';
 
 describe('Frontend - Lista de compras', () => {
-  let produto;
-
   // Pré-condições montadas via API: o teste começa já autenticado e com um produto
   // próprio, sem depender do catálogo existente no ambiente compartilhado.
   beforeEach(() => {
-    cy.criarProduto().then((criado) => {
-      produto = criado;
-    });
+    cy.criarProduto().as('produto');
     cy.criarUsuario().then((usuario) => cy.loginViaApi(usuario));
 
     HomePage.visitar();
-    cy.then(() => {
-      HomePage.pesquisarProduto(produto.nome);
-      HomePage.adicionarNaLista(produto.nome);
+    cy.get('@produto').then(({ nome }) => {
+      HomePage.pesquisarProduto(nome);
+      HomePage.adicionarNaLista(nome);
     });
     cy.location('pathname').should('eq', '/minhaListaDeProdutos');
   });
 
-  it('adiciona à lista um produto encontrado pela pesquisa', () => {
+  it('adiciona à lista um produto encontrado pela pesquisa', function () {
     ListaDeComprasPage.nomesDosProdutos()
       .should('have.length', 1)
-      .and('contain.text', produto.nome);
+      .and('contain.text', this.produto.nome);
     ListaDeComprasPage.quantidadeDoProduto().should('have.text', 'Total: 1');
   });
 

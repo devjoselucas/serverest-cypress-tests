@@ -2,23 +2,19 @@ import { carrinhosApi, produtosApi } from '../../support/api';
 
 describe('API - Carrinhos', () => {
   const ESTOQUE_INICIAL = 10;
-  let produto;
-  let token;
 
-  const estoqueAtual = () => produtosApi.buscarPorId(produto._id).its('body.quantidade');
+  const estoqueDe = (produto) => produtosApi.buscarPorId(produto._id).its('body.quantidade');
 
+  // Os aliases ficam disponíveis nos testes como this.produto e this.token.
   beforeEach(() => {
-    cy.criarProduto({ quantidade: ESTOQUE_INICIAL, preco: 150 }).then((criado) => {
-      produto = criado;
-    });
+    cy.criarProduto({ quantidade: ESTOQUE_INICIAL, preco: 150 }).as('produto');
     cy.criarUsuario()
       .then((usuario) => cy.obterToken(usuario))
-      .then((tokenGerado) => {
-        token = tokenGerado;
-      });
+      .as('token');
   });
 
-  it('cria o carrinho calculando os totais e reservando o estoque', () => {
+  it('cria o carrinho calculando os totais e reservando o estoque', function () {
+    const { produto, token } = this;
     const quantidade = 3;
 
     cy.criarCarrinho([{ idProduto: produto._id, quantidade }], token).then(({ status, body }) => {
@@ -35,14 +31,16 @@ describe('API - Carrinhos', () => {
         });
     });
 
-    estoqueAtual().should('eq', ESTOQUE_INICIAL - quantidade);
+    estoqueDe(produto).should('eq', ESTOQUE_INICIAL - quantidade);
   });
 
-  it('devolve os produtos ao estoque quando a compra é cancelada', () => {
+  it('devolve os produtos ao estoque quando a compra é cancelada', function () {
+    const { produto, token } = this;
+
     cy.criarCarrinho([{ idProduto: produto._id, quantidade: 4 }], token)
       .its('status')
       .should('eq', 201);
-    estoqueAtual().should('eq', ESTOQUE_INICIAL - 4);
+    estoqueDe(produto).should('eq', ESTOQUE_INICIAL - 4);
 
     carrinhosApi.cancelarCompra(token).then(({ status, body }) => {
       expect(status).to.eq(200);
@@ -51,10 +49,11 @@ describe('API - Carrinhos', () => {
       );
     });
 
-    estoqueAtual().should('eq', ESTOQUE_INICIAL);
+    estoqueDe(produto).should('eq', ESTOQUE_INICIAL);
   });
 
-  it('recusa quantidade acima do estoque e mantém o estoque inalterado', () => {
+  it('recusa quantidade acima do estoque e mantém o estoque inalterado', function () {
+    const { produto, token } = this;
     const quantidade = ESTOQUE_INICIAL + 1;
 
     cy.criarCarrinho([{ idProduto: produto._id, quantidade }], token).then(({ status, body }) => {
@@ -63,10 +62,12 @@ describe('API - Carrinhos', () => {
       expect(body.item).to.include({ quantidade, quantidadeEstoque: ESTOQUE_INICIAL });
     });
 
-    estoqueAtual().should('eq', ESTOQUE_INICIAL);
+    estoqueDe(produto).should('eq', ESTOQUE_INICIAL);
   });
 
-  it('exige autenticação para criar um carrinho', () => {
+  it('exige autenticação para criar um carrinho', function () {
+    const { produto } = this;
+
     carrinhosApi.criar([{ idProduto: produto._id, quantidade: 1 }]).then(({ status, body }) => {
       expect(status).to.eq(401);
       expect(body.message).to.eq(
@@ -74,6 +75,6 @@ describe('API - Carrinhos', () => {
       );
     });
 
-    estoqueAtual().should('eq', ESTOQUE_INICIAL);
+    estoqueDe(produto).should('eq', ESTOQUE_INICIAL);
   });
 });
