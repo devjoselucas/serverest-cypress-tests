@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ServeRest - Relatórios de teste</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+      }
+      body {
+        max-width: 40rem;
+        margin: 3rem auto;
+        padding: 0 1rem;
+        line-height: 1.5;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      ul {
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        margin: 0.5rem 0;
+        padding: 0.75rem 1rem;
+        border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+        border-radius: 0.5rem;
+      }
+      small {
+        display: block;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ServeRest - Relatórios de teste</h1>
+    <p>Resultado da última execução do pipeline na branch principal.</p>
+    <ul>
+      <li>
+        <a href="cypress-api-chrome/">Cypress - API</a>
+        <small>Usuários, login, carrinhos e contratos</small>
+      </li>
+      <li>
+        <a href="cypress-e2e-chrome/">Cypress - Frontend (Chrome)</a>
+        <small>Login, cadastro de usuário, lista de compras e cadastro de produtos</small>
+      </li>
+      <li>
+        <a href="cypress-e2e-firefox/">Cypress - Frontend (Firefox)</a>
+        <small>Os mesmos cenários de frontend em um segundo navegador</small>
+      </li>
+      <li>
+        <a href="playwright/">Playwright</a>
+        <small>Suíte espelho: API, Chromium e Firefox</small>
+      </li>
+    </ul>
+  </body>
+</html>
