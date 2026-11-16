@@ -212,3 +212,10 @@ A maior parte deles também existe como teste em `cypress/known-issues`. Esses t
 o comportamento esperado e, por isso, **falham de propósito** enquanto o defeito existir:
 `npm run test:known-issues` termina com erro, e isso é o resultado previsto. A suíte fica fora
 do `npm test` e do pipeline.
+
+## Manutenção
+
+Os testes rodam contra um ambiente público, que pode mudar sem aviso. O
+[guia de manutenção](docs/manutencao.md) descreve como investigar uma falha da execução
+agendada, quando mover um teste para os defeitos conhecidos e o que fazer quando um defeito é
+corrigido. Ele também traz o registro das ocorrências já tratadas.
