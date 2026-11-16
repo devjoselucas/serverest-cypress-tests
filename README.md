@@ -25,16 +25,16 @@ principais variações negativas.
 
 ### Além do escopo pedido
 
-| Entrega                     | O que é                                                                                        | Onde                                        |
-| --------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| Cenário de administrador    | Cadastro de produto pela tela, conferido na loja com um segundo perfil                         | `cypress/e2e/frontend/produtos-admin.cy.js` |
-| Testes de contrato          | Validação do formato das respostas da API com JSON Schema                                      | `cypress/e2e/api/contratos.cy.js`           |
-| Defeitos como testes        | Cada defeito documentado vira um teste que falha enquanto o defeito existir, em suíte separada | `cypress/known-issues`                      |
-| Suíte espelho em Playwright | Os mesmos 7 cenários com fixtures, `storageState` e execução paralela                          | `playwright/`                               |
-| Execução por tags           | `@smoke` (um caminho feliz por cenário) e `@contract`                                          | scripts `test:smoke`, `test:contract`       |
-| Relatórios publicados       | Relatórios HTML do Cypress e do Playwright no GitHub Pages a cada execução na branch principal | link no topo                                |
+| Entrega                     | O que é                                                                                               | Onde                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| Cenário de administrador    | Produto visível no painel do administrador e na loja do cliente (dois perfis) e validação do cadastro | `cypress/e2e/frontend/produtos-admin.cy.js` |
+| Testes de contrato          | Validação do formato das respostas da API com JSON Schema                                             | `cypress/e2e/api/contratos.cy.js`           |
+| Defeitos como testes        | Cada defeito documentado vira um teste que falha enquanto o defeito existir, em suíte separada        | `cypress/known-issues`                      |
+| Suíte espelho em Playwright | Os mesmos 7 cenários com fixtures, `storageState` e execução paralela                                 | `playwright/`                               |
+| Execução por tags           | `@smoke` (um caminho feliz por cenário) e `@contract`                                                 | scripts `test:smoke`, `test:contract`       |
+| Relatórios publicados       | Relatórios HTML do Cypress e do Playwright no GitHub Pages a cada execução na branch principal        | link no topo                                |
 
-A suíte principal do Cypress tem 27 testes; a do Playwright, 23 (35 execuções com Firefox).
+A suíte principal do Cypress tem 26 testes; a do Playwright, 22 (33 execuções com Firefox).
 
 ## Pré-requisitos
 

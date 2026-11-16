@@ -14,15 +14,15 @@ defeitos encontrados.
 Cada candidato foi avaliado por dois critérios: o impacto no negócio se a funcionalidade
 quebrar e a probabilidade de quebra (regras, integrações, perfis de acesso).
 
-| Cenário                         | Por que entrou                                                              |
-| ------------------------------- | --------------------------------------------------------------------------- |
-| Login (frontend e API)          | Porta de entrada de todos os fluxos; define o perfil e o destino do usuário |
-| Cadastro de usuário (frontend)  | Primeiro contato do cliente; integra formulário, API e redirecionamento     |
-| Lista de compras (frontend)     | Principal jornada do cliente disponível na interface                        |
-| Cadastro de produtos (frontend) | Principal jornada do administrador; conecta os dois perfis                  |
-| Usuários (API)                  | Base de todos os demais recursos; regra de unicidade de e-mail              |
-| Carrinhos (API)                 | Maior concentração de regra de negócio: totais e movimentação de estoque    |
-| Contratos (API)                 | Protege quem consome a API contra mudanças de formato                       |
+| Cenário                              | Por que entrou                                                              |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| Login (frontend e API)               | Porta de entrada de todos os fluxos; define o perfil e o destino do usuário |
+| Cadastro de usuário (frontend)       | Primeiro contato do cliente; integra formulário, API e redirecionamento     |
+| Lista de compras (frontend)          | Principal jornada do cliente disponível na interface                        |
+| Produtos do administrador (frontend) | Principal jornada do administrador; conecta os dois perfis                  |
+| Usuários (API)                       | Base de todos os demais recursos; regra de unicidade de e-mail              |
+| Carrinhos (API)                      | Maior concentração de regra de negócio: totais e movimentação de estoque    |
+| Contratos (API)                      | Protege quem consome a API contra mudanças de formato                       |
 
 ## Distribuição entre as camadas
 
@@ -64,14 +64,15 @@ quebrar e a probabilidade de quebra (regras, integrações, perfis de acesso).
 
 ## Fora do escopo
 
-| Item                                         | Motivo                                                          |
-| -------------------------------------------- | --------------------------------------------------------------- |
-| Carrinho pelo frontend                       | A tela está em construção na aplicação (defeito F2)             |
-| Edição e exclusão pelo painel administrativo | Menor risco que o cadastro; a regra já é coberta na API         |
-| Relatórios do administrador                  | Funcionalidade sem comportamento definido para validar          |
-| Desempenho e carga                           | Ambiente público compartilhado: medições não seriam confiáveis  |
-| Segurança aprofundada                        | Os achados encontrados estão documentados, sem teste de invasão |
-| Acessibilidade e responsividade              | Exigem critérios próprios; ficam como evolução                  |
+| Item                                         | Motivo                                                                                    |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Carrinho pelo frontend                       | A tela está em construção na aplicação (defeito F2)                                       |
+| Cadastro de produto pela tela                | Bloqueado por um defeito da aplicação (F10); o fluxo fica na suíte de defeitos conhecidos |
+| Edição e exclusão pelo painel administrativo | Menor risco que o cadastro; a regra já é coberta na API                                   |
+| Relatórios do administrador                  | Funcionalidade sem comportamento definido para validar                                    |
+| Desempenho e carga                           | Ambiente público compartilhado: medições não seriam confiáveis                            |
+| Segurança aprofundada                        | Os achados encontrados estão documentados, sem teste de invasão                           |
+| Acessibilidade e responsividade              | Exigem critérios próprios; ficam como evolução                                            |
 
 ## Critérios de qualidade da suíte
 
