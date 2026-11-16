@@ -1,37 +1,29 @@
-import { novoAdministrador, novoProduto } from '../../../shared/factories';
+import { novoAdministrador } from '../../../shared/factories';
 import { HomePage } from '../../pages/HomePage';
 import { ProdutosAdminPage } from '../../pages/ProdutosAdminPage';
 import { expect, test as base } from '../../support/fixtures';
 
-// Fixtures locais: um administrador criado via API e a tela de cadastro de produtos já
-// aberta na sessão dele.
+// O cadastro de produto pela tela está bloqueado por um defeito da aplicação (F10 em
+// docs/comportamentos-inesperados.md) e é exercitado em cypress/known-issues. Aqui ficam
+// os comportamentos do painel que seguem funcionando.
+
+// Fixture local: o painel de produtos aberto na sessão de um administrador criado via API.
 const test = base.extend({
-  admin: async ({ massa }, use) => {
-    await use(await massa.criarUsuario(novoAdministrador()));
-  },
-  cadastroDeProdutos: async ({ abrirSessao, admin }, use) => {
-    const tela = new ProdutosAdminPage(await abrirSessao(admin));
-    await tela.abrirCadastro();
-    await use(tela);
+  painel: async ({ massa, abrirSessao }, use) => {
+    const admin = await massa.criarUsuario(novoAdministrador());
+    await use(new ProdutosAdminPage(await abrirSessao(admin)));
   },
 });
 
-test.describe('Frontend - Cadastro de produtos (administrador)', () => {
+test.describe('Frontend - Produtos (administrador)', () => {
   test(
-    'cadastra um produto que fica disponível para os clientes na loja',
+    'exibe o produto cadastrado no painel do administrador e na loja do cliente',
     { tag: '@smoke' },
-    async ({ api, massa, abrirSessao, admin, cadastroDeProdutos }) => {
-      const produto = novoProduto();
-      const tokenAdmin = await massa.obterToken(admin);
+    async ({ massa, abrirSessao, painel }) => {
+      const produto = await massa.criarProduto();
 
-      await cadastroDeProdutos.preencher(produto);
-      const resposta = await cadastroDeProdutos.enviar();
-      const { _id } = await resposta.json();
-      massa.limparAoFinal(() => api.produtos.excluir(_id, tokenAdmin));
-      expect(resposta.status()).toBe(201);
-
-      await expect(cadastroDeProdutos.page).toHaveURL('/admin/listarprodutos');
-      const linha = cadastroDeProdutos.linhaDoProduto(produto.nome);
+      await painel.abrirLista();
+      const linha = painel.linhaDoProduto(produto.nome);
       await expect(linha).toBeVisible();
       await expect(linha).toContainText(String(produto.preco));
       await expect(linha).toContainText(String(produto.quantidade));
@@ -46,33 +38,20 @@ test.describe('Frontend - Cadastro de produtos (administrador)', () => {
     },
   );
 
-  test('exige o preenchimento dos campos obrigatórios', async ({ cadastroDeProdutos }) => {
-    const resposta = await cadastroDeProdutos.enviar();
+  test('exige o preenchimento dos campos obrigatórios no cadastro', async ({ painel }) => {
+    await painel.abrirCadastro();
+    const resposta = await painel.enviar();
     expect(resposta.status()).toBe(400);
 
-    await expect(cadastroDeProdutos.alertas.todos).toHaveCount(4);
+    await expect(painel.alertas.todos).toHaveCount(4);
     for (const mensagem of [
       'Nome é obrigatório',
       'Preco é obrigatório',
       'Descricao é obrigatório',
       'Quantidade é obrigatório',
     ]) {
-      await expect(cadastroDeProdutos.alertas.com(mensagem)).toBeVisible();
+      await expect(painel.alertas.com(mensagem)).toBeVisible();
     }
-    await expect(cadastroDeProdutos.page).toHaveURL('/admin/cadastrarprodutos');
-  });
-
-  test('não permite cadastrar um produto com nome já existente', async ({
-    massa,
-    cadastroDeProdutos,
-  }) => {
-    const existente = await massa.criarProduto();
-
-    await cadastroDeProdutos.preencher(novoProduto({ nome: existente.nome }));
-    const resposta = await cadastroDeProdutos.enviar();
-    expect(resposta.status()).toBe(400);
-
-    await expect(cadastroDeProdutos.alertas.com('Já existe produto com esse nome')).toBeVisible();
-    await expect(cadastroDeProdutos.page).toHaveURL('/admin/cadastrarprodutos');
+    await expect(painel.page).toHaveURL('/admin/cadastrarprodutos');
   });
 });

@@ -11,11 +11,10 @@ export class ProdutosAdminPage {
     await this.page.goto('/admin/cadastrarprodutos');
   }
 
-  async preencher({ nome, preco, descricao, quantidade }) {
-    await this.page.getByTestId('nome').fill(nome);
-    await this.page.getByTestId('preco').fill(String(preco));
-    await this.page.getByTestId('descricao').fill(descricao);
-    await this.page.getByTestId('quantity').fill(String(quantidade));
+  async abrirLista() {
+    const lista = respostaDe(this.page, 'GET', '/produtos');
+    await this.page.goto('/admin/listarprodutos');
+    await lista;
   }
 
   /** Envia o formulário; devolve a resposta da API de cadastro de produto. */

@@ -2,8 +2,9 @@ import Alertas from '../pages/components/Alertas';
 import CadastroPage from '../pages/CadastroPage';
 import HomePage from '../pages/HomePage';
 import ListaDeComprasPage from '../pages/ListaDeComprasPage';
-import { novoUsuario } from '../../shared/factories';
-import { usuariosApi } from '../support/api';
+import ProdutosAdminPage from '../pages/ProdutosAdminPage';
+import { novoAdministrador, novoProduto, novoUsuario } from '../../shared/factories';
+import { produtosApi, usuariosApi } from '../support/api';
 
 // Cada teste descreve o comportamento esperado de um item de
 // docs/comportamentos-inesperados.md e falha enquanto o defeito existir.
@@ -76,5 +77,41 @@ describe('Defeitos conhecidos - Frontend', () => {
     cy.visit('/admin/cadastrarprodutos');
 
     cy.location('pathname').should('not.eq', '/admin/cadastrarprodutos');
+  });
+
+  // F10: o formulário envia preço e quantidade como texto e a API os recusa (400).
+  const abrirCadastroDeProdutosComoAdmin = () => {
+    cy.criarUsuario(novoAdministrador()).then((admin) => {
+      cy.obterToken(admin).as('tokenAdmin');
+      cy.loginViaApi(admin);
+    });
+    ProdutosAdminPage.visitarCadastro();
+  };
+
+  it('[F10] o administrador deveria conseguir cadastrar um produto pela tela', () => {
+    abrirCadastroDeProdutosComoAdmin();
+    ProdutosAdminPage.preencher(novoProduto());
+
+    ProdutosAdminPage.enviar().then(({ response }) => {
+      // Quando o defeito for corrigido o produto passa a ser criado e precisa ser removido.
+      if (response.statusCode === 201) {
+        cy.get('@tokenAdmin').then((token) => {
+          cy.limparAoFinal(() => produtosApi.excluir(response.body._id, token));
+        });
+      }
+      expect(response.statusCode).to.eq(201);
+    });
+    cy.location('pathname').should('eq', '/admin/listarprodutos');
+  });
+
+  it('[F10] o cadastro pela tela deveria avisar quando o nome do produto já existe', () => {
+    abrirCadastroDeProdutosComoAdmin();
+
+    cy.criarProduto().then((existente) => {
+      ProdutosAdminPage.preencher(novoProduto({ nome: existente.nome }));
+      ProdutosAdminPage.enviar();
+
+      Alertas.com('Já existe produto com esse nome').should('be.visible');
+    });
   });
 });

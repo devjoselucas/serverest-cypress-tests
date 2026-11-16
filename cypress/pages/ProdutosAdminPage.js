@@ -6,6 +6,12 @@ class ProdutosAdminPage {
     cy.visit('/admin/cadastrarprodutos');
   }
 
+  visitarLista() {
+    cy.intercept('GET', apiUrl('/produtos*')).as('listaDeProdutos');
+    cy.visit('/admin/listarprodutos');
+    cy.wait('@listaDeProdutos');
+  }
+
   preencher({ nome, preco, descricao, quantidade }) {
     cy.getByTestId('nome').type(nome);
     cy.getByTestId('preco').type(preco);
