@@ -127,6 +127,9 @@ jobs:
       - name: Reúne os relatórios de todos os jobs
         uses: actions/download-artifact@v8
         with:
+          # Só os relatórios: ao reexecutar este job, o pacote do site da tentativa anterior
+          # (github-pages) também pertence à execução e não deve ser publicado junto.
+          pattern: '{cypress-*,playwright}'
           path: site
       - run: mkdir -p site && cp .github/pages/index.html site/index.html
       - uses: actions/upload-pages-artifact@v5
