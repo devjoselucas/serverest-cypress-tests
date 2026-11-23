@@ -121,7 +121,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url || steps.deploy-repeticao.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
       - name: Reúne os relatórios de todos os jobs
@@ -135,5 +135,17 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site
+      # O deploy procura o pacote do site no serviço interno de pacotes do Actions, que às vezes
+      # ainda não o lista menos de um segundo após o envio ("No artifacts named
+      # github-pages"). Só o próprio deploy enxerga essa listagem, então ele é repetido uma
+      # vez após uma pausa. Se a segunda tentativa também falhar, o job falha.
       - id: deploy
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Aguarda antes de repetir o deploy
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 20
+      - id: deploy-repeticao
+        name: Repete o deploy
+        if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v5
